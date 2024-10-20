@@ -1,25 +1,153 @@
 <!DOCTYPE html>
-<html>
-<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-<!-- we import arjs version without NFT but with marker + location based support -->
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-<body style="margin : 0px; overflow: hidden;">
-<a-scene embedded arjs>
-    <a-marker preset="hiro">
-        <!-- we use cors proxy to avoid cross-origin problems -->
-        <!--
-          ⚠️⚠️⚠️
-          https://arjs-cors-proxy.herokuapp.com/ is now offline, Heroku has dismissed all his free plans from November 2022.
-          You need to host your own proxy and use it instead. The proxy is based on CORS Anywhere (see https://github.com/Rob--W/cors-anywhere).
-          ⚠️⚠️⚠️
-        -->
-        <a-entity
-                position="0 0 0"
-                scale="1 1 1"
-                gltf-model="./Sneaker_Blue_Orange.glb"
-        ></a-entity>
-    </a-marker>
-    <a-entity camera></a-entity>
-</a-scene>
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Hello, AR Cube!</title>
+
+<!--    include three.js library -->
+    <script src='js/three.js'></script>
+<!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>-->
+<!--    include jsartookit -->
+    <script src="jsartoolkit5/artoolkit.min.js"></script>
+    <script src="jsartoolkit5/artoolkit.api.js"></script>
+<!--    include threex.artoolkit -->
+    <script src="threex/threex-artoolkitsource.js"></script>
+    <script src="threex/threex-artoolkitcontext.js"></script>
+    <script src="threex/threex-arbasecontrols.js"></script>
+    <script src="threex/threex-armarkercontrols.js"></script>
+    <script src="threex/threex-arsmoothedcontrols.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #closeButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            display: block;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+        }
+    </style>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>-->
+<!--    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex.js"></script>-->
+<!--    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js"></script>-->
+</head>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+<button id="closeButton" onclick="goBack()">×</button>
+<div id="info">Point your camera to the QR code</div>
+<script>
+    let scene, camera, renderer, arToolkitSource, arToolkitContext;
+    let markerRoot, mesh, controls;
+
+    init();
+    animate();
+
+    function init() {
+        scene = new THREE.Scene();
+
+        camera = new THREE.Camera();
+        scene.add(camera);
+
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        arToolkitSource = new THREEx.ArToolkitSource({
+            sourceType: 'webcam',
+        });
+
+        arToolkitSource.init(function onReady() {
+            onResize();
+        });
+
+        arToolkitContext = new THREEx.ArToolkitContext({
+            cameraParametersUrl: 'data/camera_para.dat',
+            detectionMode: 'mono',
+        });
+
+        arToolkitContext.init(function onCompleted() {
+            camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+        });
+
+        markerRoot = new THREE.Group();
+        scene.add(markerRoot);
+
+        let markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+            type: 'pattern',
+            patternUrl: 'data/hiro.patt',
+        });
+
+        // Add a simple cube as a placeholder for your 3D model
+        let geometry = new THREE.BoxGeometry(1, 1, 1);
+        let material = new THREE.MeshNormalMaterial();
+        mesh = new THREE.Mesh(geometry, material);
+        markerRoot.add(mesh);
+
+        // Add OrbitControls
+        // controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // controls.enableDamping = true;
+        // controls.dampingFactor = 0.25;
+        // controls.enableZoom = true;
+
+        window.addEventListener('resize', onResize);
+    }
+
+    function onResize() {
+        arToolkitSource.onResizeElement();
+        arToolkitSource.copyElementSizeTo(renderer.domElement);
+        if (arToolkitContext.arController !== null) {
+            arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas);
+        }
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (arToolkitSource.ready !== false) {
+            arToolkitContext.update(arToolkitSource.domElement);
+        }
+
+        // controls.update();
+        renderer.render(scene, camera);
+
+        // Update info text based on marker detection
+        let infoElement = document.getElementById('info');
+        if (markerRoot.visible) {
+            infoElement.textContent = 'Loading model...';
+        } else {
+            infoElement.textContent = 'Point your camera to the QR code';
+        }
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
 </body>
 </html>

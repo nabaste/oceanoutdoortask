@@ -61,7 +61,7 @@ export default function ProductDetailPage({ params }) {
                     </Swiper>
                     <Link href="/ar-experience.html"
                           className="absolute top-4 right-4 bg-white bg-opacity-75 p-2 rounded-full hover:bg-opacity-100 transition-colors duration-200 z-10"
-                          target="_blank"
+                          // target="_blank"
                           rel="noopener noreferrer">
                             <CubeTransparentIcon className="h-6 w-6 text-gray-800" />
                     </Link>
