@@ -1,0 +1,282 @@
+{
+  "0":{
+    "name": "Speed Runner",
+    "description": "Lightweight and responsive for your daily runs.",
+    "price": "$129.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "1":{
+    "name": "Trail Blazer",
+    "description": "Durable and grippy for off-road adventures.",
+    "price": "$149.99",
+    "image":"/images/SneakerRB.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerRB.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerRB.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerRB.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerRB.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerRB.png"
+      }
+    ]
+  },
+  "2":{
+    "name": "Marathon Pro",
+    "description": "Long-distance comfort with superior cushioning.",
+    "price": "$159.99",
+    "image":"/images/SneakerYG.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerYG.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerYG.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerYG.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerYG.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerYG.png"
+      }
+    ]
+  },
+  "3":{
+    "name": "Sprint Elite",
+    "description": "Engineered for explosive speed on the track.",
+    "price": "$139.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "4":{
+    "name": "Urban Pacer",
+    "description": "Stylish and comfortable for city walks.",
+    "price": "$119.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "5":{
+    "name": "Foam Cloud",
+    "description": "Ultra-soft cushioning for a floating feel.",
+    "price": "$144.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "6":{
+    "name": "Stability Master",
+    "description": "Support and control for overpronators.",
+    "price": "$154.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "7":{
+    "name": "Flex Freedom",
+    "description": "Natural movement with a barefoot feel.",
+    "price": "$109.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "8":{
+    "name": "Endurance Pro",
+    "description": "Built for ultra-marathons and long trails.",
+    "price": "$169.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  },
+  "9":{
+    "name": "Tempo Trainer",
+    "description": "Responsive and fast for speed workouts.",
+    "price": "$134.99",
+    "image":"/images/SneakerBO.png",
+    "images": [
+      {
+        "id": 0,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 1,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 2,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 3,
+        "src":"/images/SneakerBO.png"
+      },
+      {
+        "id": 4,
+        "src":"/images/SneakerBO.png"
+      }
+    ]
+  }
+}
