@@ -25,7 +25,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "1":{
     "name": "Trail Blazer",
@@ -53,7 +54,8 @@
         "id": 4,
         "src":"/images/SneakerRB.png"
       }
-    ]
+    ],
+    "model": "1"
   },
   "2":{
     "name": "Marathon Pro",
@@ -81,7 +83,8 @@
         "id": 4,
         "src":"/images/SneakerYG.png"
       }
-    ]
+    ],
+    "model": "2"
   },
   "3":{
     "name": "Sprint Elite",
@@ -109,7 +112,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "4":{
     "name": "Urban Pacer",
@@ -137,7 +141,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "5":{
     "name": "Foam Cloud",
@@ -165,7 +170,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "6":{
     "name": "Stability Master",
@@ -193,7 +199,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "7":{
     "name": "Flex Freedom",
@@ -221,7 +228,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "8":{
     "name": "Endurance Pro",
@@ -249,7 +257,8 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   },
   "9":{
     "name": "Tempo Trainer",
@@ -277,6 +286,7 @@
         "id": 4,
         "src":"/images/SneakerBO.png"
       }
-    ]
+    ],
+    "model": "0"
   }
 }

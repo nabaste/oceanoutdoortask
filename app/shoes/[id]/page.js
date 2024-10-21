@@ -59,7 +59,7 @@ export default function ProductDetailPage({ params }) {
                             </SwiperSlide>
                         ))}
                     </Swiper>
-                    <Link href="/ar-experience.html"
+                    <Link href={`/ar-experience.html?modelId=` + prod.model}
                           className="absolute top-4 right-4 bg-white bg-opacity-75 p-2 rounded-full hover:bg-opacity-100 transition-colors duration-200 z-10"
                           // target="_blank"
                           rel="noopener noreferrer">

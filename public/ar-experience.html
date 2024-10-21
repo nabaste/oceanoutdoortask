@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html>
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<!-- we import arjs version without NFT but with marker + location based support -->
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
+<script>
+    // Get the model data from the query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const modelId = urlParams.get('modelId');
 
-<<style>
+    // Load the appropriate 3D model based on the modelId
+    window.addEventListener('DOMContentLoaded', () => {
+        const modelAsset = document.querySelector('#model-asset');
+        switch (modelId) {
+            case '0':
+                modelAsset.setAttribute('src', '/models/Sneaker_Blue_Orange.glb');
+                break;
+            case '1':
+                modelAsset.setAttribute('src', '/models/Sneaker_Red_Blue.glb');
+                break;
+            case '2':
+                modelAsset.setAttribute('src', '/models/Sneaker_Yellow_Green.glb');
+                break;
+            default:
+                modelAsset.setAttribute('src', '/models/Sneaker_Blue_Orange.glb');
+        }
+
+        const modelEntity = document.querySelector('#shoe-model');
+        modelEntity.setAttribute('gltf-model', '#model-asset');
+    });
+</script>
+
+<style>
     body {
         margin: 0;
         overflow: hidden;
@@ -29,6 +54,7 @@
 </style>
 <body>
 <button id="closeButton" onclick="goBack()">×</button>
+
 <a-scene
         arjs="trackingMethod: best; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 4x4_BCH_13_5_5;"
         embedded
@@ -39,7 +65,7 @@
 >
     <a-assets>
         <a-asset-item
-                id="shoe"
+                id="model-asset"
                 src="/models/Sneaker_Blue_Orange.glb"
         >
         </a-asset-item>
@@ -57,21 +83,55 @@
                 id="shoe-model"
                 gltf-model="#shoe"
                 position="0 0 0"
-                scale="10 10 10"
                 rotation="-45 45 -90"
                 class="clickable"
                 gesture-handler="minScale: 0.25; maxScale: 3"
+                animation-manager
         >
         </a-entity>
     </a-marker>
     <a-entity camera></a-entity>
 </a-scene>
 
-
 <script>
     function goBack() {
         window.history.back();
     }
+
+    AFRAME.registerComponent('animation-manager', {
+        init: function () {
+            const marker = document.querySelector('#markerA'); // Attach to your marker entity
+            marker.addEventListener('markerFound', () => {
+                if (!this.animationPlayed) {
+                    this.playIntroAnimation();
+                    this.animationPlayed = true;
+                }
+            });
+
+            marker.addEventListener('markerLost', () => {
+                // this.animationPlayed = false;  // Reset animation state on marker loss
+                // Optionally reset other attributes here
+            });
+        },
+
+        playIntroAnimation: function () {
+            this.el.setAttribute('animation__scale', {
+                property: 'scale',
+                from: '0 0 0',
+                to: '20 20 20',
+                dur: 5000,
+                easing: 'easeOutElastic'
+            });
+
+            this.el.setAttribute('animation__spin', {
+                property: 'rotation',
+                from: '-90 90 -90',
+                to: '-405 405 -445',
+                dur: 5000,
+                easing: 'easeOutCubic'
+            });
+        }
+    });
 </script>
 
 </body>
