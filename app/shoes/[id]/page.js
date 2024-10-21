@@ -53,7 +53,7 @@ export default function ProductDetailPage({ params }) {
                         className="w-full min-h-64 aspect-w-4 aspect-h-3"
                     >
                         {prod.images.map((image) => (
-                            <SwiperSlide className="w-full min-h-64" key={image.src}>
+                            <SwiperSlide className="w-full min-h-64" key={image.id}>
                                 <Image src={image.src} alt={`${prod.name} - Image ${image.src + 1}`} layout="fill"
                                        objectFit="cover"/>
                             </SwiperSlide>
