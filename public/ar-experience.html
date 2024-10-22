@@ -3,32 +3,6 @@
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
-<script>
-    // Get the model data from the query string
-    const urlParams = new URLSearchParams(window.location.search);
-    const modelId = urlParams.get('modelId');
-
-    // Load the appropriate 3D model based on the modelId
-    window.addEventListener('DOMContentLoaded', () => {
-        const modelAsset = document.querySelector('#model-asset');
-        switch (modelId) {
-            case '0':
-                modelAsset.setAttribute('src', '/models/Sneaker_Blue_Orange.glb');
-                break;
-            case '1':
-                modelAsset.setAttribute('src', '/models/Sneaker_Red_Blue.glb');
-                break;
-            case '2':
-                modelAsset.setAttribute('src', '/models/Sneaker_Yellow_Green.glb');
-                break;
-            default:
-                modelAsset.setAttribute('src', '/models/Sneaker_Blue_Orange.glb');
-        }
-
-        const modelEntity = document.querySelector('#shoe-model');
-        modelEntity.setAttribute('gltf-model', '#model-asset');
-    });
-</script>
 
 <style>
     body {
@@ -51,8 +25,54 @@
         align-items: center;
         cursor: pointer;
     }
+    .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .instructions {
+        position: fixed;
+        opacity: 0;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9998;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 2px;
+        text-align: center;
+        font-size: 1.25em;
+        font-family: sans-serif;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+        transform: translateY(-50%);
+    }
 </style>
+
 <body>
+<div class="arjs-loader">
+    <div>Loading, please wait...</div>
+</div>
+
+<div id="instructions" class="instructions">
+    Point your camera to the QR code
+</div>
+
 <button id="closeButton" onclick="goBack()">×</button>
 
 <a-scene
@@ -62,13 +82,11 @@
         vr-mode-ui="enabled: false"
         gesture-detector
         id="scene"
+        loading-screen="enabled: false"
 >
+<!--    Preload Asset-->
     <a-assets>
-        <a-asset-item
-                id="model-asset"
-                src="/models/Sneaker_Blue_Orange.glb"
-        >
-        </a-asset-item>
+        <a-asset-item id="animated-model" src="/models/Sneaker_Pieces_animated3.glb"></a-asset-item>
     </a-assets>
 
     <a-marker
@@ -81,61 +99,119 @@
     >
         <a-entity
                 id="shoe-model"
-                gltf-model="#shoe"
-                position="0 0 0"
-                rotation="-45 45 -90"
+                gltf-model=""
+                position="0 0.5 0"
+                rotation="0 0 0"
+                scale="10 10 10"
                 class="clickable"
-                gesture-handler="minScale: 0.25; maxScale: 3"
-                animation-manager
+                gesture-handler="minScale: 0.25; maxScale: 30"
+                animation-mixer="clip: *; loop: repeat; timeScale: 1"
         >
+            <a-light type="point" color="#fff" intensity="1" position="0 2 2"></a-light>
+            <a-light type="point" color="#fff" intensity="1" position="2 0 2"></a-light>
+            <a-light type="point" color="#fff" intensity="1" position="2 2 0"></a-light>
         </a-entity>
-        <a-light type="point" color="#fff" intensity="5" position="0 2 2"></a-light>
-        <a-light type="point" color="#fff" intensity="5" position="2 2 0"></a-light>
-        <a-light type="point" color="#fff" intensity="5" position="2 0 2"></a-light>
-
     </a-marker>
     <a-entity camera></a-entity>
 </a-scene>
 
 <script>
-    function goBack() {
-        window.history.back();
-    }
+    // Get the model data from the query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const modelId = urlParams.get('modelId');
+
+    // Handle different loading stages
+    const scene = document.querySelector('a-scene');
+    const loader = document.querySelector('.arjs-loader');
+    const instructions = document.querySelector('#instructions');
+    const modelEntity = document.querySelector('#shoe-model');
+
+    let hasModelLoaded = false;
+    let hasAnimationPlayed = false;
+
+    // Load the appropriate 3D model based on the modelId
+    window.addEventListener('DOMContentLoaded', () => {
+        switch (modelId) {
+            case '0':
+                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Blue_Orange.glb');
+                break;
+            case '1':
+                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Red_Blue.glb');
+                break;
+            case '2':
+                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Yellow_Green.glb');
+                break;
+            default:
+                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Blue_Orange.glb');
+        }
+    });
+
+
+    // When camera is ready
+    scene.addEventListener('loaded', function () {
+
+        loader.style.display = 'none';
+        instructions.style.opacity = '1';
+        const marker = document.querySelector('#markerA');
+
+        marker.addEventListener('markerFound', () => {
+            if(!hasModelLoaded) {
+                // Update instructions
+                instructions.textContent = 'Loading experience...please wait';
+            } else {
+                instructions.style.opacity = '0';
+            }
+        });
+
+        marker.addEventListener('markerLost', () => {
+            // Show instructions again when marker is lost
+            instructions.textContent = 'Point your camera to the QR code';
+            instructions.style.opacity = '1';
+        });
+
+        modelEntity.addEventListener('model-loaded',() => {
+            instructions.style.opacity = '0';
+            hasModelLoaded = true;
+            if(!hasAnimationPlayed){
+                hasAnimationPlayed=true;
+            }
+        });
+    });
 
     AFRAME.registerComponent('animation-manager', {
-        init: function () {
-            const marker = document.querySelector('#markerA'); // Attach to your marker entity
-            marker.addEventListener('markerFound', () => {
-                if (!this.animationPlayed) {
-                    this.playIntroAnimation();
-                    this.animationPlayed = true;
-                }
-            });
-
-            marker.addEventListener('markerLost', () => {
-                // this.animationPlayed = false;  // Reset animation state on marker loss
-                // Optionally reset other attributes here
-            });
-        },
 
         playIntroAnimation: function () {
             this.el.setAttribute('animation__scale', {
                 property: 'scale',
-                from: '0 0 0',
-                to: '20 20 20',
-                dur: 5000,
+                from: '1 1 1',
+                to: '10 10 10',
+                dur: 10000,
                 easing: 'easeOutElastic'
             });
 
             this.el.setAttribute('animation__spin', {
                 property: 'rotation',
-                from: '-90 90 -90',
-                to: '-405 405 -445',
-                dur: 5000,
+                from: '0 0 0',
+                to: '-45 405 -90',
+                dur: 10000,
+                easing: 'easeOutCubic'
+            });
+
+            this.el.setAttribute('animation__position', {
+                property: 'rotation',
+                from: '0 0 0',
+                to: '0 0.5 0',
+                dur: 10000,
                 easing: 'easeOutCubic'
             });
         }
     });
+
+
+
+    function goBack() {
+        window.history.back();
+    }
 </script>
 
 </body>
