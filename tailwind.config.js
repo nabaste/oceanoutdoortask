@@ -10,7 +10,8 @@ module.exports = {
       fontFamily: {
         inter: ['var(--font-inter)'],
         workSans: ['var(--font-work-sans)'],
-        lora: ['var(--font-lora)']
+        lora: ['var(--font-lora)'],
+        agdasima: ['var(--font-agdasima)'],
       },
       colors: {
         background: "var(--background)",
