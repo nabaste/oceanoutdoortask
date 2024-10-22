@@ -21,13 +21,6 @@ export default function Home() {
                           <ShoeItem shoe={value}/>
                       </Link>
                   ))}
-
-
-                  {/*{shoes.map((shoe) => (*/}
-                  {/*    <Link key={shoe.id} href={`shoes/${shoe.id}`}>*/}
-                  {/*      <ShoeItem shoe={shoe}/>*/}
-                  {/*    </Link>*/}
-                  {/*))}*/}
               </div>
           </main>
       </div>
