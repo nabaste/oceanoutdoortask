@@ -12,9 +12,9 @@ export default function ShoeItem({shoe}){
                     className="absolute top-0 left-0"
                 />
             </div>
-            <div className="p-4">
-                <h2 className="text-base font-semibold text-gray-900">{shoe.name}</h2>
-                <p className="mt-1 text-sm text-gray-500 line-clamp-2">{shoe.description}</p>
+            <div className="px-4 pb-4 pt-2">
+                <h2 className="font-workSans text-base font-bold text-gray-900">{shoe.name}</h2>
+                <p className="font-lora mt-1 text-sm text-gray-500 line-clamp-2">{shoe.description}</p>
                 <p className="mt-2 text-lg font-medium text-gray-900">{shoe.price}</p>
             </div>
         </div>

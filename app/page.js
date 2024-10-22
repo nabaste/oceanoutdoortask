@@ -8,14 +8,14 @@ export default function Home() {
   return (
       <div >
           {/*<Header/>*/}
-          <main className="max-w-7xl mx-auto py-8 md:px-4">
-              <div className="text-sm breadcrumbs">
+          <main className="max-w-7xl mx-auto py-4 md:px-4">
+              <div className="text-sm breadcrumbs px-4 md:px-0">
                   <span className="text-gray-500">Running</span>
                   <span className="mx-2 text-gray-400">/</span>
                   <span className="text-gray-900 font-medium">Shoes</span>
               </div>
 
-              <h1 className="text-lg font-bold text-gray-900 mt-4 mb-8">Men&apos;s Running Shoes</h1>
+              <h1 className="text-xl font-workSans font-bold text-gray-900 px-4 md:px-0 mt-2 mb-4">Men&apos;s Running Shoes</h1>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                   {Object.entries(Products)

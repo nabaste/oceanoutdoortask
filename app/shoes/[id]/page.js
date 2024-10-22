@@ -60,7 +60,7 @@ export default function ProductDetailPage({ params }) {
                         ))}
                     </Swiper>
                     <Link href={`/ar-experience.html?modelId=` + prod.model}
-                          className="absolute top-4 right-4 bg-white bg-opacity-75 p-2 rounded-full hover:bg-opacity-100 transition-colors duration-200 z-10"
+                          className="absolute top-4 right-4 bg-white border border-blue-950 p-2 rounded-lg hover:bg-opacity-100 transition-colors duration-200 z-10"
                           // target="_blank"
                           rel="noopener noreferrer">
                             <CubeTransparentIcon className="h-6 w-6 text-gray-800" />
@@ -90,10 +90,10 @@ export default function ProductDetailPage({ params }) {
 
             <div className="fixed bottom-0 left-0 right-0 bg-black py-2">
                 <button
-                    className="w-full py-3 px-4 font-semibold text-white hover:bg-gray-100 duration-200"
+                    className="w-full py-3 px-4 font-light text-white hover:bg-gray-100 duration-200"
                     onClick={() => alert('Added to bag')}
                 >
-                    Add to Bag
+                    ADD TO BAG
                 </button>
             </div>
         </div>
