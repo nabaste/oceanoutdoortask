@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
-<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 
 <style>
     body {
@@ -62,6 +63,28 @@
         color: white;
         transform: translateY(-50%);
     }
+
+    .animation-controls {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        display: flex;
+        gap: 10px;
+    }
+
+    .anim-button {
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .anim-button:active {
+        background-color: rgba(200, 200, 200, 0.8);
+    }
 </style>
 
 <body>
@@ -74,6 +97,10 @@
 </div>
 
 <button id="closeButton" onclick="goBack()">×</button>
+<div class="animation-controls">
+    <button class="anim-button" id="animButton">Animate</button>
+    <button class="anim-button" id="stopButton">Stop</button>
+</div>
 
 <a-scene
         arjs="trackingMethod: best; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 4x4_BCH_13_5_5;"
@@ -86,7 +113,7 @@
 >
 <!--    Preload Asset-->
     <a-assets>
-        <a-asset-item id="animated-model" src="/models/Sneaker_Pieces_animated3.glb"></a-asset-item>
+        <a-asset-item id="preloaded-model" src=""></a-asset-item>
     </a-assets>
 
     <a-marker
@@ -99,17 +126,17 @@
     >
         <a-entity
                 id="shoe-model"
-                gltf-model=""
+                gltf-model="#preloaded-model"
                 position="0 0.5 0"
                 rotation="0 0 0"
                 scale="10 10 10"
                 class="clickable"
                 gesture-handler="minScale: 0.25; maxScale: 30"
-                animation-mixer="clip: *; loop: repeat; timeScale: 1"
+                animation-mixer="clip: *; loop: once; timeScale: 1; clampWhenFinished: true"
         >
-            <a-light type="point" color="#fff" intensity="1" position="0 2 2"></a-light>
-            <a-light type="point" color="#fff" intensity="1" position="2 0 2"></a-light>
-            <a-light type="point" color="#fff" intensity="1" position="2 2 0"></a-light>
+            <a-light type="point" color="#E1DECF" intensity="1" position="0 2 2"></a-light>
+            <a-light type="point" color="#E1DECF" intensity="1" position="2 0 2"></a-light>
+            <a-light type="point" color="#E1DECF" intensity="1" position="2 2 0"></a-light>
         </a-entity>
     </a-marker>
     <a-entity camera></a-entity>
@@ -125,27 +152,28 @@
     const loader = document.querySelector('.arjs-loader');
     const instructions = document.querySelector('#instructions');
     const modelEntity = document.querySelector('#shoe-model');
+    const modelPreLoader = document.querySelector('#preloaded-model')
+
+    //Animation controls
+    const animButton = document.querySelector('#animButton');
+    const stopButton = document.querySelector('#stopButton');
 
     let hasModelLoaded = false;
     let hasAnimationPlayed = false;
 
-    // Load the appropriate 3D model based on the modelId
-    window.addEventListener('DOMContentLoaded', () => {
-        switch (modelId) {
-            case '0':
-                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Blue_Orange.glb');
-                break;
-            case '1':
-                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Red_Blue.glb');
-                break;
-            case '2':
-                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Yellow_Green.glb');
-                break;
-            default:
-                modelEntity.setAttribute('gltf-model', '/models/Sneaker_Blue_Orange.glb');
-        }
-    });
-
+    switch (modelId) {
+        case '0':
+            modelPreLoader.setAttribute('src', '/models/Sneaker1.glb');
+            break;
+        case '1':
+            modelPreLoader.setAttribute('src', '/models/Sneaker2.glb');
+            break;
+        case '2':
+            modelPreLoader.setAttribute('src', '/models/Sneaker3.glb');
+            break;
+        default:
+            modelPreLoader.setAttribute('src', '/models/Sneaker1.glb');
+    }
 
     // When camera is ready
     scene.addEventListener('loaded', function () {
@@ -160,6 +188,15 @@
                 instructions.textContent = 'Loading experience...please wait';
             } else {
                 instructions.style.opacity = '0';
+                if(!hasAnimationPlayed){
+                    modelEntity.setAttribute('animation-mixer', {
+                        clip: "Start",
+                        loop: 'once',
+                        timeScale: 1
+                    });
+                    modelEntity.components['animation-mixer'].play();
+                    hasAnimationPlayed = true;
+                }
             }
         });
 
@@ -169,12 +206,14 @@
             instructions.style.opacity = '1';
         });
 
+        let animationNames = [];
         modelEntity.addEventListener('model-loaded',() => {
             instructions.style.opacity = '0';
             hasModelLoaded = true;
-            if(!hasAnimationPlayed){
-                hasAnimationPlayed=true;
-            }
+            const mixer = modelEntity.components['animation-mixer'];
+            mixer.pause();
+            animationNames = mixer.model.animations.map(anim => anim.name);
+            console.log('Available animations:', animationNames);
         });
     });
 
@@ -207,7 +246,24 @@
         }
     });
 
+    // Animation 1 Button
+    animButton.addEventListener('click', () => {
+            const mixer = modelEntity.components['animation-mixer'];
+            modelEntity.setAttribute('animation-mixer', {
+                clip: "Rotation",
+                loop: 'repeat',
+                timeScale: 1
+            });
+            mixer.play();
+    });
 
+    stopButton.addEventListener('click', () => {
+        const mixer = modelEntity.components['animation-mixer'];
+        if (mixer) {
+            mixer.pause();
+            mixer.mixer.setTime(0); // Reset to beginning
+        }
+    });
 
     function goBack() {
         window.history.back();
