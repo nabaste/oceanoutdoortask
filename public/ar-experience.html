@@ -160,6 +160,7 @@
 
     let hasModelLoaded = false;
     let hasAnimationPlayed = false;
+    let isMarkerTracked = false;
 
     switch (modelId) {
         case '0':
@@ -183,6 +184,7 @@
         const marker = document.querySelector('#markerA');
 
         marker.addEventListener('markerFound', () => {
+            isMarkerTracked = true;
             if(!hasModelLoaded) {
                 // Update instructions
                 instructions.textContent = 'Loading experience...please wait';
@@ -201,6 +203,7 @@
         });
 
         marker.addEventListener('markerLost', () => {
+            isMarkerTracked = false;
             // Show instructions again when marker is lost
             instructions.textContent = 'Point your camera to the QR code';
             instructions.style.opacity = '1';
@@ -214,6 +217,15 @@
             mixer.pause();
             animationNames = mixer.model.animations.map(anim => anim.name);
             console.log('Available animations:', animationNames);
+            if (isMarkerTracked && !hasAnimationPlayed) {
+                modelEntity.setAttribute('animation-mixer', {
+                    clip: "Start",
+                    loop: 'once',
+                    timeScale: 1
+                });
+                modelEntity.components['animation-mixer'].play();
+                hasAnimationPlayed = true;
+            }
         });
     });
 
