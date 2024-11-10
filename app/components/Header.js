@@ -1,3 +1,15 @@
+// Header Component
+// This component serves as the main navigation header of the e-commerce website
+// It provides a consistent layout with:
+// - Company logo on the left that links to the homepage
+// - Navigation icons on the right for core e-commerce functionalities:
+//   * Search functionality
+//   * User account access
+//   * Shopping cart
+//   * Mobile menu toggle
+// The header is responsive and maintains a fixed height with proper spacing
+// Using HeroIcons for consistent iconography across the application
+
 import { MagnifyingGlassIcon, UserIcon, ShoppingBagIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import Link from "next/link";
 import Image from "next/image";

@@ -1,3 +1,12 @@
+// ShoeItem Component
+// This component is responsible for rendering individual shoe product cards
+// It receives a shoe object as a prop containing product details (image, name, description, price)
+// The component creates a consistent product card layout with:
+// - A responsive image container with proper aspect ratio
+// - Product information section with name, truncated description, and price
+// - Consistent border styling to create a grid effect when multiple cards are displayed
+
+
 import Image from 'next/image';
 
 export default function ShoeItem({shoe}){

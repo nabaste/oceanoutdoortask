@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html>
+<!-- Core Library Imports -->
+<!-- A-Frame: Primary WebXR framework -->
+<!-- AR.js: Handles AR functionality including marker detection -->
+<!-- Gestures.js: Enables touch interactions with 3D models -->
+<!-- A-Frame Extras: Additional components for 3D model animations -->
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 <script src="https://raw.githack.com/fcor/arjs-gestures/master/dist/gestures.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 
+
+<!-- Styles Section -->
+<!-- Contains all UI element styling including:
+     - Loading overlay
+     - Close button
+     - Instruction messages
+     - Animation control buttons
+     All elements are positioned using fixed positioning to overlay the AR view -->
 <style>
     body {
         margin: 0;
@@ -88,20 +101,29 @@
 </style>
 
 <body>
+<!-- UI Elements -->
+<!-- Loading overlay shown during initial load -->
 <div class="arjs-loader">
     <div>Loading, please wait...</div>
 </div>
 
+<!-- Instruction overlay for user guidance -->
 <div id="instructions" class="instructions">
     Point your camera to the QR code
 </div>
 
+<!-- Animation Control Elements -->
 <button id="closeButton" onclick="goBack()">×</button>
 <div class="animation-controls">
     <button class="anim-button" id="animButton">Animate</button>
     <button class="anim-button" id="stopButton">Stop</button>
 </div>
 
+<!-- AR Scene Configuration -->
+<!-- Main A-Frame scene with AR.js settings:
+     - Uses best tracking method
+     - Configured for marker-based AR
+     - Enables gesture detection for model interaction -->
 <a-scene
         arjs="trackingMethod: best; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 4x4_BCH_13_5_5;"
         embedded
@@ -116,6 +138,11 @@
         <a-asset-item id="preloaded-model" src=""></a-asset-item>
     </a-assets>
 
+    <!-- Marker Configuration -->
+    <!-- Defines the AR marker and its associated 3D model:
+         - Uses barcode marker type
+         - Enables raycasting for interaction
+         - Configures cursor behavior -->
     <a-marker
             type="barcode"
             value="10"
@@ -134,6 +161,8 @@
                 gesture-handler="minScale: 0.25; maxScale: 30"
                 animation-mixer="clip: *; loop: once; timeScale: 1; clampWhenFinished: true"
         >
+
+            <!-- Lighting Setup for Model -->
             <a-light type="point" color="#E1DECF" intensity="1" position="0 2 2"></a-light>
             <a-light type="point" color="#E1DECF" intensity="1" position="2 0 2"></a-light>
             <a-light type="point" color="#E1DECF" intensity="1" position="2 2 0"></a-light>
@@ -142,6 +171,7 @@
     <a-entity camera></a-entity>
 </a-scene>
 
+<!-- JavaScript Section -->\
 <script>
     // Get the model data from the query string
     const urlParams = new URLSearchParams(window.location.search);
@@ -162,6 +192,7 @@
     let hasAnimationPlayed = false;
     let isMarkerTracked = false;
 
+    //Preload proper model based on UrlParams
     switch (modelId) {
         case '0':
             modelPreLoader.setAttribute('src', '/models/Sneaker1.glb');
@@ -176,7 +207,8 @@
             modelPreLoader.setAttribute('src', '/models/Sneaker1.glb');
     }
 
-    // When camera is ready
+    // Event Handlers
+    // Scene loaded handler
     scene.addEventListener('loaded', function () {
 
         loader.style.display = 'none';
@@ -209,6 +241,7 @@
             instructions.style.opacity = '1';
         });
 
+        //GLTF Animation check in Console
         let animationNames = [];
         modelEntity.addEventListener('model-loaded',() => {
             instructions.style.opacity = '0';
@@ -229,36 +262,7 @@
         });
     });
 
-    AFRAME.registerComponent('animation-manager', {
-
-        playIntroAnimation: function () {
-            this.el.setAttribute('animation__scale', {
-                property: 'scale',
-                from: '1 1 1',
-                to: '10 10 10',
-                dur: 10000,
-                easing: 'easeOutElastic'
-            });
-
-            this.el.setAttribute('animation__spin', {
-                property: 'rotation',
-                from: '0 0 0',
-                to: '-45 405 -90',
-                dur: 10000,
-                easing: 'easeOutCubic'
-            });
-
-            this.el.setAttribute('animation__position', {
-                property: 'rotation',
-                from: '0 0 0',
-                to: '0 0.5 0',
-                dur: 10000,
-                easing: 'easeOutCubic'
-            });
-        }
-    });
-
-    // Animation 1 Button
+    // Animation Control Button Events
     animButton.addEventListener('click', () => {
             const mixer = modelEntity.components['animation-mixer'];
             modelEntity.setAttribute('animation-mixer', {
